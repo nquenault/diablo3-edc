@@ -58,7 +58,7 @@ namespace Diablo3_ElementageDamage_Comparator
                 }
                 else if (gain < 0)
                 {
-                    res = resultString.Replace("%res%", "worth");
+                    res = resultString.Replace("%res%", "worst");
                     resBackColor = Color.Red;
                     resForeColor = Color.White;
                 }
