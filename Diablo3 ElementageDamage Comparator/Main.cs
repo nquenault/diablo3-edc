@@ -30,6 +30,18 @@ namespace Diablo3_ElementageDamage_Comparator
             _defaultResColor = ui_Result.BackColor;
         }
 
+        private double gainCalc(double currentPC, double itemPC)
+        {
+            double newPC = currentPC + itemPC;
+
+            currentPC = currentPC / 100 + 1;
+            newPC = newPC / 100 + 1;
+            double diffPC = newPC / currentPC;
+            diffPC = (diffPC - 1) * 100;
+
+            return diffPC;
+        }
+
         private void Compute()
         {
             Color resBackColor =_defaultResColor;
@@ -38,17 +50,20 @@ namespace Diablo3_ElementageDamage_Comparator
 
             try
             {
-                double currentPC = double.Parse(ui_CurrentPC.Text.Replace(".", ","));
-                double itemPC = double.Parse(ui_ItemPC.Text.Replace(".", ","));
-                double DPSAddition = double.Parse(ui_DPSAddition.Text.Replace(".", ","));
-                double newPC = currentPC + itemPC;
+                double currentElementalDamage = double.Parse(ui_CurrentElementalDamage.Text.Replace(".", ","));
+                double currentEliteDamage = double.Parse(ui_CurrentEliteDamage.Text.Replace(".", ","));
+                double currentSkillDamage = double.Parse(ui_CurrentSkillDamage.Text.Replace(".", ","));
 
-                currentPC = currentPC / 100 + 1;
-                newPC = newPC / 100 + 1;
-                double diffPC = newPC / currentPC;
-                diffPC = (diffPC - 1) * 100;
+                double itemElementalDamage = double.Parse(ui_ItemElementalDamage.Text.Replace(".", ","));
+                double itemEliteDamage = double.Parse(ui_ItemEliteDamage.Text.Replace(".", ","));
+                double itemSkillDamage = double.Parse(ui_ItemSkillDamage.Text.Replace(".", ","));
+                double dpsAddition = double.Parse(ui_DPSAddition.Text.Replace(".", ","));
 
-                double gain = diffPC + DPSAddition;
+                double gainElementalDamage = gainCalc(currentElementalDamage, itemElementalDamage);
+                double gainEliteDamage = gainCalc(currentEliteDamage, itemEliteDamage);
+                double gainSkillDamage = gainCalc(currentSkillDamage, itemSkillDamage);
+
+                double gain = gainElementalDamage + gainEliteDamage + gainSkillDamage + dpsAddition;
 
                 if (gain > 0)
                 {
@@ -98,9 +113,21 @@ namespace Diablo3_ElementageDamage_Comparator
             this.TopMost = alwaysOnTopToolStripMenuItem.Checked;
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void thisAppOnGoogleCodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("http://diablo3-elementaldamage-comparator.googlecode.com/");
+        }
+
+        private void onMouseClick(object sender, MouseEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            textBox.SelectionStart = 0;
+            textBox.SelectionLength = textBox.TextLength;
+        }
+
+        private void visitWebappVersionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://d3ec.nquenault.com/");
         }
     }
 }
